@@ -14,9 +14,12 @@ use App\Http\Controllers\Admin\PostsController;
 use App\Http\Controllers\Admin\CategoriesController;
 
 //hi!!!
-//konitiwa---!!!
+//konitiwa---!!! sayounara-!!!
 //ohayo-----!!!!
+// konnnichihawa---!!!!
 //test1
+
+
 
 Auth::routes();
 
