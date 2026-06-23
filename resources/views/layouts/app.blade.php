@@ -50,7 +50,7 @@
                         {{-- This wil. not show up in the admin pages --}}
                             <ul class="navbar-nav ms-auto">
                                 <form action="{{ route('search')}}" style="width: 300px">
-                                    <input type="search" name="search" class="form-control-sm" placeholder="Search...">
+                                    <input type="search" name="search" class="form-control form-control-sm" placeholder="Search...">
                                 </form>
                             </ul>
                         @endif
