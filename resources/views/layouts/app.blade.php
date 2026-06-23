@@ -47,17 +47,37 @@
                     @auth
                         {{-- search is only available for logged in users --}}
                         @if (!request()->is('admin/*'))
-                        {{-- This wil. not show up in the admin pages --}}
-                            <ul class="navbar-nav ms-auto">
+                            {{-- This wil. not show up in the admin pages --}}
+                            {{-- -------------------------<ul class="navbar-nav ms-auto">
                                 <form action="{{ route('search')}}" style="width: 300px">
                                     <input type="search" name="search" class="form-control form-control-sm" placeholder="Search...">
                                 </form>
-                            </ul>
+                            </ul> -------------------------------- --}}
                         @endif
                     @endauth
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        {{-- 検索フォーム（最初は非表示 → 虫眼鏡ボタンで左に出てくる） --}}
+                        {{-- collapse → Bootstrapが自動で表示/非表示を切り替えてくれる --}}
+                        <div class="collapse w-100" id="searchForm">
+                            <form action="{{ route('search') }}" class="d-flex justify-content-end py-1">
+                                <input type="search" name="search" class="form-control form-control-sm"
+                                    style="width: 300px" placeholder="Search users, posts...">
+                            </form>
+                        </div>
+
+                        <ul class="navbar-nav ms-auto me-1">
+                            <li class="nav-item">
+                                <button class="btn shadow-none nav-link" data-bs-toggle="collapse"
+                                    data-bs-target="#searchForm" title="Search">
+                             {{-- data-bs-toggle="collapse" → Bootstrapの折りたたみ機能を使う --}}
+                             {{-- data-bs-target="#searchForm" → id="searchForm"の要素を開閉する --}}
+                             {{-- 虫眼鏡ボタン --}}
+                                    <i class="fa-solid fa-magnifying-glass text-dark icon-sm"></i>
+                                </button>
+                            </li>
+                        </ul>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -101,13 +121,13 @@
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown">
                                     {{-- [SOON] Admin Controls @canの追加 --}}
                                     @can('admin')
-                                    {{-- @if (Gate::allows('admin')) --}}
+                                        {{-- @if (Gate::allows('admin')) --}}
                                         <a href="{{ route('admin.users') }}" class="dropdown-item">
                                             <i class="fa-solid fa-user-gear"></i> Admin
                                         </a>
 
                                         <hr class="dropdown-divider">
-                                    {{-- @endif --}}
+                                        {{-- @endif --}}
                                     @endcan
 
 
