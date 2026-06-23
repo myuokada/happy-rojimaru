@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -37,16 +38,16 @@ class HomeController extends Controller
         return view('users.home')
             ->with('home_posts', $home_posts)
             ->with('suggested_users', $suggested_users);
-
     }
 
     #Filter homepage. Show posts for auth's user and from followed users
-    public function getHomePosts() {
+    public function getHomePosts()
+    {
         $all_posts = $this->post->latest()->get(); //det all post from latest posted
         $home_posts = []; //array dor the auth's posts and followed users
 
-        foreach($all_posts as $post) {
-            if($post->user->isFollowed() || $post->user->id === Auth::user()->id){
+        foreach ($all_posts as $post) {
+            if ($post->user->isFollowed() || $post->user->id === Auth::user()->id) {
                 //if posts are from followed posts will be inside the array
                 $home_posts[] = $post;
             }
@@ -55,20 +56,42 @@ class HomeController extends Controller
     }
 
     #Get the users that the AUTH USER is not following
-    public function getSuggestedUser() {
-        $all_users = $this->user->all()->except(Auth::user()->id);//get al users expect logged in user
+    public function getSuggestedUser()
+    {
+        $all_users = $this->user->all()->except(Auth::user()->id); //get al users expect logged in user
         $suggested_users = []; //array for users auth user is not following
 
-        foreach($all_users as $user){//loop through all users
-            if(!$user->isFollowed()){//if the AUTH USER is not following that user
-            $suggested_users[] = $user;
+        foreach ($all_users as $user) { //loop through all users
+            if (!$user->isFollowed()) { //if the AUTH USER is not following that user
+                $suggested_users[] = $user;
             }
-    }
-    return $suggested_users;//return array
+        }
+        return $suggested_users; //return array
     }
 
-    public function search(Request $request) {
-        $users = $this->user->where('name', 'like', '%' .$request->search.'%')->get();
-        return view('users.search')->with('users', $users)->with('search', $request->search);
+    public function search(Request $request)
+    {
+        $keyword = $request->search;
+        //$keyword = $request->search; ← $request->search を $keyword に入れただけ同じ値を3回使うので、最初に変数に入れてすっきりさせた
+        // 1. データベースから、検索ワードに一部でも一致するユーザーを取得する
+        $users = $this->user
+            ->where('name', 'like', '%' . $request->search . '%')
+            ->get();
+
+        $posts = Post::with('user')
+            ->where('description', 'like', '%' . $keyword . '%')
+            ->latest()
+            ->get();
+
+        $categories = Category::where('name', 'like', '%' . $keyword . '%')
+            ->get();
+
+        // その際、検索結果（$users）と、入力された検索ワード（$request->keyword）を画面に渡す
+        return view('users.search')
+            ->with('users', $users)
+            ->with('posts', $posts)
+            ->with('categories', $categories)
+            ->with('search', $keyword);
+
     }
 }
