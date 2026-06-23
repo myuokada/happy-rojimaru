@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\CategoriesController;
 
 //hi!!!
 //konitiwa---!!!
+//ohayo-----!!!!
 
 Auth::routes();
 
