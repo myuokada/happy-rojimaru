@@ -6,7 +6,7 @@
     @include('users.profile.header')
 
     {{-- show all posts here --}}
-    <div style="margin-top: 100px">
+    <div style="margin-top: 30px">
         @if ($user->posts->isNotEmpty())
             <div class="row">
                 @foreach ($user->posts as $post)

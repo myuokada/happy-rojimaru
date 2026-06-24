@@ -59,4 +59,30 @@ class ProfileController extends Controller
         $user = $this->user->with('following.following')->findOrFail($id);
         return view('users.profile.following')->with('user', $user);
     }
+
+    public function likes(Request $request, $id) {
+        $user = $this->user->findOrFail($id);
+        $postIds = $user->posts()->pluck('id');
+
+        $all_likes_query = \App\Models\Like::whereIn('post_id', $postIds)
+                            ->where('user_id', '!=', $id);
+
+        $grouped_likes = $all_likes_query->get()->unique('post_id')->reverse();
+        $show_all = $request->query('show_all', false);
+
+        // see more... の10件判定
+        if ($show_all) {
+            $likes = $grouped_likes;
+        } else {
+            $likes = $grouped_likes->take(7);
+        }
+
+        // (10)以外にも表示したいのあるよー
+        $has_more = $grouped_likes->count() > $likes->count();
+
+        return view('users.profile.likes')
+            ->with('user', $user)
+            ->with('likes', $likes)
+            ->with('has_more', $has_more);
+    }
 }
