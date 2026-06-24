@@ -72,6 +72,13 @@
                                 </li>
                             @endif
                         @else
+                            {{-- earth House icon --}}
+                            <li class="nav-item" title="earth">
+                                <a href="{{ route('index') }}" class="nav-link">
+                                    <i class="fa-solid fa-earth-americas text-dark icon-sm"></i>
+                                </a>
+                            </li>
+
                             {{-- Home House icon --}}
                             <li class="nav-item" title="Home">
                                 <a href="{{ route('index') }}" class="nav-link">

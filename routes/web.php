@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route; //最初からある
 use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Admin\PostsController;
 use App\Http\Controllers\Admin\CategoriesController;
+use Illuminate\Support\Facades\Auth;
 
 //hi!!!
 //konitiwa---!!! sayounara-!!!
@@ -19,7 +20,9 @@ use App\Http\Controllers\Admin\CategoriesController;
 // konnnichihawa---!!!!
 //test1
 
-
+// for heart stay
+Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])
+    ->name('posts.like');
 
 Auth::routes();
 

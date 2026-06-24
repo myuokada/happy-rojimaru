@@ -8,28 +8,49 @@ use App\Models\Like;
 
 class LikeController extends Controller
 {
-    private $like;
 
-    public function __construct(Like $like) {
-        $this->like = $like;
-    }
-
-    #store data for user_id and post_id
-    public function store($post_id) {
-        $this->like->user_id = Auth::user()->id;//logged in user are thr ones who will like a post
-        $this->like->post_id  = $post_id;
-        $this->like->save();
-
-        return redirect()->back();
-    }
-
-    #unlike
-    public function destroy($post_id) {
-        $this->like
-            ->where('user_id', Auth::user()->id)
+    public function toggle($post_id)
+    {
+        $like = Like::where('user_id', Auth::id())
             ->where('post_id', $post_id)
-            ->delete();
+            ->first();
 
-            return redirect()->back();
+        // すでにいいねしてる → 削除（解除）
+        if ($like) {
+            $like->delete();
+
+            return response()->json([
+                'liked' => false
+            ]);
+        }
+
+        // まだいいねしてない → 作成
+        Like::create([
+            'user_id' => Auth::id(),
+            'post_id' => $post_id,
+        ]);
+
+        return response()->json([
+            'liked' => true
+        ]);
+
     }
+    public function store($id)
+{
+    Like::create([
+        'user_id' => Auth::id(),
+        'post_id' => $id
+    ]);
+
+    return back();
+}
+
+public function destroy($id)
+{
+    Like::where('user_id', Auth::id())
+        ->where('post_id', $id)
+        ->delete();
+
+    return back();
+}
 }
