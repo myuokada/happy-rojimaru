@@ -8,22 +8,11 @@
     {{-- heart button + no.of likes --}}
     <div class="row align-items-center">
         <div class="col-auto">
-            @if ($post->isLiked())
-                <form action="{{ route('like.destroy', $post->id) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-sm shadow-none p-0">
-                        <i class="fa-solid fa-heart text-danger"></i>
-                    </button>
-                </form>
-            @else
-                <form action="{{ route('like.store', $post->id) }}" method="post">
-                    @csrf
-                    <button type="submit" class="btn btn-sm shadow-none p-0">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
-                </form>
-            @endif
+            <button class="like-btn btn btn-sm shadow-none p-0" data-id="{{ $post->id }}">
+                <i class="fa-solid fa-heart
+                    {{ $post->isLiked() ? 'text-danger' : 'text-secondary' }}">
+                </i>
+            </button>
         </div>
         <div class="col-auto px-0">
             <span>{{ $post->likes->count() }}</span>
@@ -54,3 +43,35 @@
     {{-- include comments here --}}
     @include('users.posts.contents.comments')
 </div>
+
+
+<script>
+document.querySelectorAll('.like-btn').forEach(button => {
+    button.addEventListener('click', function () {
+
+        let postId = this.dataset.id;
+        let icon = this.querySelector('i');
+
+        fetch(`/posts/${postId}/like`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+
+            if (data.liked) {
+                icon.classList.add('text-danger');
+                icon.classList.remove('text-secondary');
+            } else {
+                icon.classList.add('text-secondary');
+                icon.classList.remove('text-danger');
+            }
+
+        });
+
+    });
+});
+</script>
