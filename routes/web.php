@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 //ohayo-----!!!!
 // konnnichihawa---!!!!
 //test1
+//test2
 
 // for heart stay
 Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])
