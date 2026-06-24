@@ -78,4 +78,8 @@ class User extends Authenticatable
         // get all the followers of the user($this->followers()).Then from the list, search for the AUTH USER from follower column (where('follower_id).AUTH::user()->id))
     }
 
+    public function likes() {
+        return $this->hasMany(like::class);
+    }
+
 }

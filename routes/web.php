@@ -70,6 +70,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/{id}/followers', [ProfileController::class, 'followers'])->name('profile.followers');
     Route::get('/profile/{id}/following', [ProfileController::class, 'following'])->name('profile.following');
+    Route::get('/profile/{id}/likes', [ProfileController::class, 'likes'])->name('profile.likes');
 
     #LIKE
     Route::post('/like/{post_id}/store', [LikeController::class, 'store'])->name('like.store');
