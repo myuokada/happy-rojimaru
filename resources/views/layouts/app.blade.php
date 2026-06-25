@@ -58,26 +58,30 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        {{-- 検索フォーム（最初は非表示 → 虫眼鏡ボタンで左に出てくる） --}}
-                        {{-- collapse → Bootstrapが自動で表示/非表示を切り替えてくれる --}}
-                        <div class="collapse w-100" id="searchForm">
-                            <form action="{{ route('search') }}" class="d-flex justify-content-end py-1">
-                                <input type="search" name="search" class="form-control form-control-sm"
-                                    style="width: 300px" placeholder="Search users, posts...">
-                            </form>
-                        </div>
+                        @auth
+                            {{-- ログイン中のユーザーにだけ検索を表示 --}}
 
-                        <ul class="navbar-nav ms-auto me-1">
-                            <li class="nav-item">
-                                <button class="btn shadow-none nav-link" data-bs-toggle="collapse"
-                                    data-bs-target="#searchForm" title="Search">
-                             {{-- data-bs-toggle="collapse" → Bootstrapの折りたたみ機能を使う --}}
-                             {{-- data-bs-target="#searchForm" → id="searchForm"の要素を開閉する --}}
-                             {{-- 虫眼鏡ボタン --}}
-                                    <i class="fa-solid fa-magnifying-glass text-dark icon-sm"></i>
-                                </button>
-                            </li>
-                        </ul>
+                            {{-- 検索フォーム（最初は非表示 → 虫眼鏡ボタンで左に出てくる） --}}
+                            {{-- collapse → Bootstrapが自動で表示/非表示を切り替えてくれる --}}
+                            <div class="collapse w-100" id="searchForm">
+                                <form action="{{ route('search') }}" class="d-flex justify-content-end py-1">
+                                    <input type="search" name="search" class="form-control form-control-sm"
+                                        style="width: 300px" placeholder="Search users, posts...">
+                                </form>
+                            </div>
+
+                            <ul class="navbar-nav ms-auto me-1">
+                                <li class="nav-item">
+                                    <button class="btn shadow-none nav-link" data-bs-toggle="collapse"
+                                        data-bs-target="#searchForm" title="Search">
+                                        {{-- data-bs-toggle="collapse" → Bootstrapの折りたたみ機能を使う --}}
+                                        {{-- data-bs-target="#searchForm" → id="searchForm"の要素を開閉する --}}
+                                        {{-- 虫眼鏡ボタン --}}
+                                        <i class="fa-solid fa-magnifying-glass text-dark icon-sm"></i>
+                                    </button>
+                                </li>
+                            </ul>
+                        @endauth
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
