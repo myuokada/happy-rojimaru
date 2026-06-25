@@ -82,4 +82,13 @@ class User extends Authenticatable
         return $this->hasMany(like::class);
     }
 
+    // bookmarks持ってる
+    public function bookmarks() {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    // もうpost_idをbookmarkしてたらexists
+    public function isBookmarked($postId) {
+        return $this->bookmarks()->where('post_id', $postId)->exists();
+    }
 }

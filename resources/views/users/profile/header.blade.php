@@ -45,19 +45,26 @@
                 </a>
             </div>
             <div class="col-auto">
-                <a href="{{ route('profile.followers', $user->id )}}" class="text-decoration-none text-dark">
-                    <strong>{{ $user->followers->count() }}</strong>  {{ $user->followers->count() == 1 ? 'follower' : 'followers' }}
+                <a href="{{ route('profile.followers', $user->id) }}" class="text-decoration-none text-dark">
+                    <strong>{{ $user->followers->count() }}</strong>
+                    {{ $user->followers->count() == 1 ? 'follower' : 'followers' }}
                 </a>
             </div>
             <div class="col-auto">
                 <a href="{{ route('profile.following', $user->id) }}" class="text-decoration-none text-dark">
                     <strong>{{ $user->following->count() }}</strong> following
                 </a>
-            {{-- Add liked --}}
+                {{-- Add liked --}}
             </div>
             <div class="col-auto">
                 <a href="{{ route('profile.likes', $user->id) }}" class="text-decoration-none text-dark">
-                    Liked
+                    <i class="fa-regular fa-heart fa-heart2"></i>
+                </a>
+            </div>
+            {{-- Bookmark --}}
+            <div class="col-auto">
+                <a href="{{ route('profile.bookmarks', $user->id) }}" class="text-decoration-none text-dark">
+                    <i class="fa-regular fa-bookmark fa-bookmark2"></i>
                 </a>
             </div>
         </div>

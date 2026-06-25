@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookmarkController; //myu追加
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
@@ -80,5 +81,10 @@ Route::group(['middleware' => 'auth'], function(){
     #FOLLOW
     Route::post('/follow/{user_id}/store', [FollowController::class, 'store'])->name('follow.store');
     Route::delete('/follow/{user_id}/destroy', [FollowController::class, 'destroy'])->name('follow.destroy');
+
+    #BOOKMARK //myu
+    Route::post('/bookmark/{post_id}', [BookmarkController::class, 'store'])->name('bookmark.store');
+    Route::delete('/bookmark/{post_id}', [BookmarkController::class, 'destroy'])->name('bookmark.destroy');
+    Route::get('/profile/{id}/bookmarks', [ProfileController::class, 'bookmarks'])->name('profile.bookmarks');
 
 });
