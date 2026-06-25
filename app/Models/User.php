@@ -88,7 +88,7 @@ class User extends Authenticatable
     }
 
     // もうpost_idをbookmarkしてたらexists
-    public function isBookmarked($postId) {
-        return $this->bookmarks()->where('post_id', $postId)->exists();
+    public function isBookmarked($post_id) {
+        return $this->bookmarks()->where('post_id', $post_id)->exists();
     }
 }
