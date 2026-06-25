@@ -3,6 +3,7 @@
 @section('title', '$user->name')
 
 @section('content')
+
     @include('users.profile.header')
 
     {{-- show all posts here --}}

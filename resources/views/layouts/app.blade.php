@@ -28,6 +28,35 @@
 </head>
 
 <body>
+    {{-- ↓ カラー追加 --}}
+    @auth
+        @php
+            $colors = auth()->user()->profile_colors ?? ['#667eea', '#764ba2'];
+            $c1 = $colors[0];
+            $c2 = $colors[1] ?? $colors[0];
+            $c3 = $colors[2] ?? ($colors[1] ?? $colors[0]);
+        @endphp
+
+        <style>
+            body {
+                background: linear-gradient(180deg, {{ $c1 }}, {{ $c2 }}, {{ $c3 }});
+                background-attachment: fixed;
+                min-height: 100vh;
+            }
+        </style>
+
+        <script>
+            window.addEventListener('scroll', () => {
+                // 角度は固定、色の位置だけスクロールに応じてずらす
+                const p = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+                const stop2 = Math.round(30 + p * 40); // 中間色の位置が動く
+                document.body.style.background =
+                    `linear-gradient(180deg, {{ $c1 }} 0%, {{ $c2 }} ${stop2}%, {{ $c3 }} 100%)`;
+                document.body.style.backgroundAttachment = 'fixed';
+            });
+        </script>
+    @endauth
+    {{-- ↑ カラー背景ここまで --}}
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

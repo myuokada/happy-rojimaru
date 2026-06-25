@@ -11,12 +11,14 @@ class ProfileController extends Controller
 {
     private $user;
 
-    public function __construct(User $user){
+    public function __construct(User $user)
+    {
         $this->user = $user;
     }
 
     #get specific user
-    public function show($id) {
+    public function show($id)
+    {
         $user = $this->user->findOrFail($id);
 
         // myu→このプロフィール画面の主（$id）がお気に入りしたレコードを最新順で全部取ってくる
@@ -28,26 +30,31 @@ class ProfileController extends Controller
     }
 
     #edit specific user
-    public function edit() {
-        $user = $this->user->findOrFail(Auth::user()->id);//logged in users are the one whi do the action to edit
-        return view('users.profile.edit')->with('user',$user);
+    public function edit()
+    {
+        $user = $this->user->findOrFail(Auth::user()->id); //logged in users are the one whi do the action to edit
+        return view('users.profile.edit')->with('user', $user);
     }
 
     #update profile user
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $request->validate([
             'name'          => 'required|min:1|max:50',
-            'email'         => 'required|email|max:50|unique:users,email,' . Auth::user()->id,//unique, table, column, PK value
+            'email'         => 'required|email|max:50|unique:users,email,' . Auth::user()->id, //unique, table, column, PK value
             'image'         => 'mimes:jpeg,jpg,png,gif|max:1048',
             'introduction'  => 'max:100',
+            'profile_colors'   => 'nullable|array|max:3',      // ← 追加背景色
+            'profile_colors.*' => 'regex:/^#[0-9A-Fa-f]{6}$/', // ← 追加背景色
         ]);
 
         $user                = $this->user->findOrFail(Auth::user()->id);
         $user->name          = $request->name;
         $user->email         = $request->email;
         $user->introduction  = $request->introduction;
+        $user->profile_colors = $request->profile_colors ?? ['#667eea', '#764ba2']; // ← 追加背景色
 
-        if($request->avatar){
+        if ($request->avatar) {
             $user->avatar = 'data:image/' . $request->avatar->extension() . ';base64,' . base64_encode(file_get_contents($request->avatar));
         }
 
@@ -56,22 +63,25 @@ class ProfileController extends Controller
         return redirect()->route('profile.show', Auth::user()->id);
     }
 
-    public function followers($id) {
+    public function followers($id)
+    {
         $user = $this->user->findOrFail($id);
         return view('users.profile.followers')->with('user', $user);
     }
 
-     public function following($id) {
+    public function following($id)
+    {
         $user = $this->user->with('following.following')->findOrFail($id);
         return view('users.profile.following')->with('user', $user);
     }
 
-    public function likes(Request $request, $id) {
+    public function likes(Request $request, $id)
+    {
         $user = $this->user->findOrFail($id);
         $postIds = $user->posts()->pluck('id');
 
         $all_likes_query = \App\Models\Like::whereIn('post_id', $postIds)
-                            ->where('user_id', '!=', $id);
+            ->where('user_id', '!=', $id);
 
         $grouped_likes = $all_likes_query->get()->unique('post_id')->reverse();
         $show_all = $request->query('show_all', false);
@@ -90,7 +100,8 @@ class ProfileController extends Controller
             ->with('has_more', $has_more);
     }
 
-    public function bookmarks($id) {
+    public function bookmarks($id)
+    {
         $user = $this->user->findOrFail($id);
 
         $bookmarks = \App\Models\Bookmark::where('user_id', $id)->latest()->get();
@@ -100,4 +111,3 @@ class ProfileController extends Controller
             ->with('bookmarks', $bookmarks);
     }
 }
-
