@@ -41,4 +41,8 @@ class Post extends Model
         // $this->like - refers to all likes of the post. from that result,we are going to search for the user id of the Auth user. If it exits, it will return TRUE
     }
 
+    //投稿がたくさんお気に入りされる
+    public function bookmarks() {
+    return $this->hasMany(Bookmark::class);
+    }
 }
