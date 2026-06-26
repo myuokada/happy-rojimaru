@@ -22,7 +22,7 @@
                             <img src="{{ $user->avatar }}" alt="{{ $user->name }}"
                                 class="rounded-circle d-block mx-auto avatar-md">
                         @else
-                            <i class="fa-solid fa-circle-user mx-auto d-block text-center icon-md"></i>
+                            <i class="fa-solid fa-circle-user d-block text-center icon-md mx-auto"></i>
                         @endif
                     </td>
                     <td>
