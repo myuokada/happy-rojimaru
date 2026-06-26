@@ -9,44 +9,37 @@ use App\Models\Post;
 
 class LikeController extends Controller
 {
-
-public function toggle()
-{
-    $like = Like::where('user_id', Auth::id())
-        ->where('post_id', $this->post->id)
-        ->first();
-
-    if ($like) {
-
-        Like::where('user_id', Auth::id())
+    public function toggle()
+    {
+        $like = Like::where('user_id', Auth::id())
             ->where('post_id', $this->post->id)
-            ->delete();
+            ->first();
 
-        $this->liked = false;
+        if ($like) {
+            Like::where('user_id', Auth::id())
+                ->where('post_id', $this->post->id)
+                ->delete();
 
-        $this->dispatch('unliked');
+            $this->liked = false;
+            $this->dispatch('unliked');
+        } else {
+            Like::create([
+                'user_id' => Auth::id(),
+                'post_id' => $this->post->id,
+            ]);
 
-    } else {
+            $this->liked = true;
+            $this->dispatch('liked');
+        }
 
-        Like::create([
-            'user_id' => Auth::id(),
-            'post_id' => $this->post->id,
-        ]);
+        $this->likesCount = Like::where(
+            'post_id',
+            $this->post->id
+        )->count();
+    } // 👈 toggle関数はここで終わり
 
-        $this->liked = true;
-
-        $this->dispatch('liked');
-    }
-
-    $this->likesCount = Like::where(
-        'post_id',
-        $this->post->id
-    )->count();
-}
-
-
-}
-        public function store($id)
+    // 💡 はみ出していたstoreとdestroyを、クラスの波カッコ「 } 」の内側に引っ越しさせました！
+    public function store($id)
     {
         Like::create([
             'user_id' => Auth::id(),
@@ -63,6 +56,6 @@ public function toggle()
             ->delete();
 
         return back();
-
     }
-}
+
+} 
