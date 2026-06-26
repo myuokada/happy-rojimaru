@@ -36,6 +36,8 @@
                 </form>
             @endif
         </div>
+        <div class="col-auto">
+<livewire:like-button :post="$post" :key="$post->id" />        </div>
         <div class="col text-end">
             @foreach ($post->categoryPost as $category_post)
                 {{-- call the relationship to get how many categories under a post (Post Model - categoryPost) --}}
@@ -64,33 +66,3 @@
 </div>
 
 
-<script>
-document.querySelectorAll('.like-btn').forEach(button => {
-    button.addEventListener('click', function () {
-
-        let postId = this.dataset.id;
-        let icon = this.querySelector('i');
-
-        fetch(`/posts/${postId}/like`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-
-            if (data.liked) {
-                icon.classList.add('text-danger');
-                icon.classList.remove('text-secondary');
-            } else {
-                icon.classList.add('text-secondary');
-                icon.classList.remove('text-danger');
-            }
-
-        });
-
-    });
-});
-</script>
