@@ -194,6 +194,68 @@
             </div>
         </main>
     </div>
+
+
+        </div>
+
+<script>
+function createHeart(emoji) {
+
+    const heart = document.createElement('div');
+
+    heart.innerHTML = emoji;
+
+    heart.style.position = 'fixed';
+    heart.style.left = Math.random() * window.innerWidth + 'px';
+    heart.style.top = '-50px';
+
+    heart.style.fontSize = (30 + Math.random() * 40) + 'px';
+
+    heart.style.zIndex = '9999';
+    heart.style.pointerEvents = 'none';
+
+    document.body.appendChild(heart);
+
+    let y = -50;
+
+    const timer = setInterval(() => {
+
+        y += 8;
+        heart.style.top = y + 'px';
+
+        if (y > window.innerHeight) {
+            clearInterval(timer);
+            heart.remove();
+        }
+
+    }, 16);
+}
+
+window.addEventListener('liked', () => {
+
+    for(let i = 0; i < 50; i++) {
+
+        setTimeout(() => {
+            createHeart('❤️');
+        }, i * 80);
+
+    }
+
+});
+
+window.addEventListener('unliked', () => {
+
+    for(let i = 0; i < 20; i++) {
+
+        setTimeout(() => {
+            createHeart('🩶');
+        }, i * 80);
+
+    }
+
+});
+</script>
+
 </body>
 
 </html>

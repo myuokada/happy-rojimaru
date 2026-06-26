@@ -5,52 +5,64 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Like;
+use App\Models\Post;
 
 class LikeController extends Controller
 {
 
-    public function toggle($post_id)
-    {
-        $like = Like::where('user_id', Auth::id())
-            ->where('post_id', $post_id)
-            ->first();
+public function toggle()
+{
+    $like = Like::where('user_id', Auth::id())
+        ->where('post_id', $this->post->id)
+        ->first();
 
-        // すでにいいねしてる → 削除（解除）
-        if ($like) {
-            $like->delete();
+    if ($like) {
 
-            return response()->json([
-                'liked' => false
-            ]);
-        }
+        Like::where('user_id', Auth::id())
+            ->where('post_id', $this->post->id)
+            ->delete();
 
-        // まだいいねしてない → 作成
+        $this->liked = false;
+
+        $this->dispatch('unliked');
+
+    } else {
+
         Like::create([
             'user_id' => Auth::id(),
-            'post_id' => $post_id,
+            'post_id' => $this->post->id,
         ]);
 
-        return response()->json([
-            'liked' => true
+        $this->liked = true;
+
+        $this->dispatch('liked');
+    }
+
+    $this->likesCount = Like::where(
+        'post_id',
+        $this->post->id
+    )->count();
+}
+
+
+}
+        public function store($id)
+    {
+        Like::create([
+            'user_id' => Auth::id(),
+            'post_id' => $id
         ]);
+
+        return back();
+    }
+
+    public function destroy($id)
+    {
+        Like::where('user_id', Auth::id())
+            ->where('post_id', $id)
+            ->delete();
+
+        return back();
 
     }
-    public function store($id)
-{
-    Like::create([
-        'user_id' => Auth::id(),
-        'post_id' => $id
-    ]);
-
-    return back();
-}
-
-public function destroy($id)
-{
-    Like::where('user_id', Auth::id())
-        ->where('post_id', $id)
-        ->delete();
-
-    return back();
-}
 }
