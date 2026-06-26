@@ -61,7 +61,7 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-warning px-5">Save</button>
+
 
                 {{-- Profile Colors  masa追加しました↓ --}}
                 <div class="mb-3">
@@ -102,15 +102,18 @@
                         const div = document.createElement('div');
                         div.className = 'd-flex flex-column align-items-center gap-1';
                         div.innerHTML = `
-        <input type="color" name="profile_colors[]" value="#f093fb"
-               style="width:48px;height:48px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
-        <button type="button" onclick="this.closest('div').remove(); updatePreview()"
-                style="font-size:11px;color:#999;border:none;background:none;cursor:pointer;">削除</button>`;
+                          <input type="color" name="profile_colors[]" value="#f093fb"
+                            style="width:48px;height:48px;border:none;border-radius:8px;cursor:pointer;padding:2px;">
+                          <button type="button" onclick="this.closest('div').remove(); updatePreview()"
+                            style="font-size:11px;color:#999;border:none;background:none;cursor:pointer;">削除</button>`;
                         pickers.appendChild(div);
                         div.querySelector('input').addEventListener('input', updatePreview);
                         updatePreview();
                     });
                 </script>
+
+                <button type="submit" class="btn btn-warning px-5">Save</button>
+
             </form>
         </div>
     </div>

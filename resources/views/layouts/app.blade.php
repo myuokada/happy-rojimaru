@@ -126,8 +126,8 @@
                             @endif
                         @else
                             {{-- earth House icon --}}
-                            <li class="nav-item" title="earth">
-                                <a href="{{ route('index') }}" class="nav-link">
+                            <li class="nav-item" title="Earth Traveler Haruccho">
+                                <a href="{{ route('search') }}?search=travel" class="nav-link">
                                     <i class="fa-solid fa-earth-americas text-dark icon-sm"></i>
                                 </a>
                             </li>
@@ -229,65 +229,65 @@
     </div>
 
 
-        </div>
+    </div>
 
-<script>
-function createHeart(emoji) {
+    <script>
+        function createHeart(emoji) {
 
-    const heart = document.createElement('div');
+            const heart = document.createElement('div');
 
-    heart.innerHTML = emoji;
+            heart.innerHTML = emoji;
 
-    heart.style.position = 'fixed';
-    heart.style.left = Math.random() * window.innerWidth + 'px';
-    heart.style.top = '-50px';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = '-50px';
 
-    heart.style.fontSize = (30 + Math.random() * 40) + 'px';
+            heart.style.fontSize = (30 + Math.random() * 40) + 'px';
 
-    heart.style.zIndex = '9999';
-    heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
+            heart.style.pointerEvents = 'none';
 
-    document.body.appendChild(heart);
+            document.body.appendChild(heart);
 
-    let y = -50;
+            let y = -50;
 
-    const timer = setInterval(() => {
+            const timer = setInterval(() => {
 
-        y += 8;
-        heart.style.top = y + 'px';
+                y += 8;
+                heart.style.top = y + 'px';
 
-        if (y > window.innerHeight) {
-            clearInterval(timer);
-            heart.remove();
+                if (y > window.innerHeight) {
+                    clearInterval(timer);
+                    heart.remove();
+                }
+
+            }, 16);
         }
 
-    }, 16);
-}
+        window.addEventListener('liked', () => {
 
-window.addEventListener('liked', () => {
+            for (let i = 0; i < 50; i++) {
 
-    for(let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createHeart('❤️');
+                }, i * 80);
 
-        setTimeout(() => {
-            createHeart('❤️');
-        }, i * 80);
+            }
 
-    }
+        });
 
-});
+        window.addEventListener('unliked', () => {
 
-window.addEventListener('unliked', () => {
+            for (let i = 0; i < 20; i++) {
 
-    for(let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createHeart('🩶');
+                }, i * 80);
 
-        setTimeout(() => {
-            createHeart('🩶');
-        }, i * 80);
+            }
 
-    }
-
-});
-</script>
+        });
+    </script>
 
 </body>
 
