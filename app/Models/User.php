@@ -51,6 +51,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+             'profile_colors' => 'array',  // ← カラー追加
         ];
     }
 
@@ -82,4 +83,13 @@ class User extends Authenticatable
         return $this->hasMany(like::class);
     }
 
+    // bookmarks持ってる
+    public function bookmarks() {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    // もうpost_idをbookmarkしてたらexists
+    public function isBookmarked($post_id) {
+        return $this->bookmarks()->where('post_id', $post_id)->exists();
+    }
 }

@@ -78,7 +78,7 @@
                 </div>
                 <div class="card-body w-100">
                     <div class="row align-items-center">
-                        <div class="col-auto">
+                        <div class="col-auto pe-0">
                             @if ($post->isLiked())
                                 <form action="{{ route('like.destroy', $post->id) }}" method="post">
                                     @csrf
@@ -96,16 +96,34 @@
                                 </form>
                             @endif
                         </div>
-                        <div class="col-auto px-0">
+                        <div class="col-auto p-0 pt-2 count-like">
                             <span>{{ $post->likes->count() }}</span>
                         </div>
+                         
+                        {{-- bookmark --}}
+                        <div class="col-auto ps-2 ms-1">
+                            @if (Auth::user()->isBookmarked($post->id))
+                                <form action="{{ route('bookmark.destroy', $post->id) }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm shadow-none p-0">
+                                        <i class="fa-solid fa-bookmark text-primary"></i>
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('bookmark.store', $post->id) }}" method="post" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm shadow-none p-0">
+                                        <i class="fa-regular fa-bookmark"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+
                         <div class="col text-end">
                             @foreach ($post->categoryPost as $category_post)
-                                {{-- call the relationship to get how many categories under a post (Post Model - categoryPost) --}}
                                 <div class="badge bg-secondary bg-opacity-50">
                                     {{ $category_post->category->name }}
-                                    {{-- ここのnameをidにしたらadminに登録したidの番号に切り替わる --}}
-                                    {{-- to get the name of the category, check categoryPost model and call category method relationship --}}
                                 </div>
                             @endforeach
                             @if ($post->categoryPost->isEmpty())
@@ -120,7 +138,6 @@
                     <p class="d-inline fw-light">{{ $post->description }}</p>
                     &nbsp;
                     <p class="text-uppercase text-muted xsmall">{{ date('M d,Y', strtotime($post->created_at)) }}</p>
-                    {{-- strtotime->string to time（文字から時間へ）の略 --}}
 
                     {{-- include comments here --}}
                     <div class="mt-4">
@@ -128,7 +145,6 @@
                             @csrf
 
                             <div class="input-group">
-                                {{-- in name attribute add the id of the specific post user commented --}}
                                 <textarea name="comment_body{{ $post->id }}" cols="30" rows="1" class="form-control form-control-sm"
                                     placeholder="Add comment...">{{ old('comment_body' . $post->id) }}</textarea>
                                 <button type="submit" class="btn btn-outline-secondary btn-sm" title="Post">
@@ -143,7 +159,6 @@
 
                         {{-- Show all comments here --}}
                         @if ($post->comments->isNotEmpty())
-                            {{-- call relationship ti show all comments (check Post Model) and check if its not empty --}}
                             <ul class="list-group mt-2">
                                 @foreach ($post->comments as $comment)
                                     <li class="list-group-item border-0 p-0 mb-2">
@@ -160,7 +175,6 @@
                                                 class="text-uppercase text-muted xsmall
                                     ">{{ date('M d, Y', strtotime($comment->created_at)) }}</span>
 
-                                            {{-- If the AUTH user is the OWNER of the comment,show delete btn --}}
                                             @if (Auth::user()->id === $comment->user->id)
                                                 &middot;
                                                 <button type="submit"

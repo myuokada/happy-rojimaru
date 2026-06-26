@@ -7,6 +7,35 @@
 <div class="card-body">
     {{-- heart button + no.of likes --}}
     <div class="row align-items-center">
+        <div class="col-auto pe-1">
+            <button class="like-btn btn btn-sm shadow-none p-0 pe-0" data-id="{{ $post->id }}">
+                <i class="fa-solid fa-heart
+                    {{ $post->isLiked() ? 'text-danger' : 'text-secondary' }}">
+                </i>
+            </button>
+        </div>
+        <div class="col-auto p-0">
+            <span>{{ $post->likes->count() }}</span>
+        </div>
+        {{-- ここからbookmark --}}
+        <div class="col-auto ps-2 ms-1">
+            @if (Auth::user()->isBookmarked($post->id))
+                <form action="{{ route('bookmark.destroy', $post->id) }}" method="post" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm shadow-none p-0">
+                        <i class="fa-solid fa-bookmark text-primary"></i>
+                    </button>
+                </form>
+            @else
+                <form action="{{ route('bookmark.store', $post->id) }}" method="post" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-sm shadow-none p-0">
+                        <i class="fa-regular fa-bookmark text-secondary"></i>
+                    </button>
+                </form>
+            @endif
+        </div>
         <div class="col-auto">
 <livewire:like-button :post="$post" :key="$post->id" />        </div>
         <div class="col text-end">

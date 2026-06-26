@@ -20,6 +20,24 @@
     font-size: 1.5rem;
 }
 
+/*  ♡good button for profile*/
+.fa-heart2 {
+    font-size: 1rem;
+}
+
+.fa-bookmark {
+    font-size: 1.3rem;
+}
+
+.fa-bookmark2 {
+    font-size: 1rem;
+}
+
+.count-like {
+    font-size: 0.7rem;
+}
+
+
 /* Header icon img */
 .icon-lg {
     font-size: 9rem;
