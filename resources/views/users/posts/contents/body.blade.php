@@ -6,18 +6,13 @@
 </div>
 <div class="card-body">
     {{-- heart button + no.of likes --}}
-    <div class="row align-items-center">
+     <div class="row align-items-center">
         <div class="col-auto pe-1">
-            <button class="like-btn btn btn-sm shadow-none p-0 pe-0" data-id="{{ $post->id }}">
-                <i class="fa-solid fa-heart
-                    {{ $post->isLiked() ? 'text-danger' : 'text-secondary' }}">
-                </i>
-            </button>
-        </div>
-        <div class="col-auto p-0">
-            <span>{{ $post->likes->count() }}</span>
-        </div>
-        {{-- ここからbookmark --}}
+     </div>
+     <div class="col-auto">
+        <livewire:like-button :post="$post" :key="$post->id" />
+     </div>
+      {{-- ここからbookmark --}}
         <div class="col-auto ps-2 ms-1">
             @if (Auth::user()->isBookmarked($post->id))
                 <form action="{{ route('bookmark.destroy', $post->id) }}" method="post" class="d-inline">
@@ -36,8 +31,6 @@
                 </form>
             @endif
         </div>
-        <div class="col-auto">
-<livewire:like-button :post="$post" :key="$post->id" />        </div>
         <div class="col text-end">
             @foreach ($post->categoryPost as $category_post)
                 {{-- call the relationship to get how many categories under a post (Post Model - categoryPost) --}}
